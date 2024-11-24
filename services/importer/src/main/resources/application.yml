@@ -1,0 +1,38 @@
+datadog:
+  auth:
+    apiKey: your-api-key
+    appKey: your-app-key
+    host: https://api.datadoghq.eu
+  client:
+    logsPerRequest: 100
+
+jobs:
+  importer:
+    cron: "0 */1 * * * *"
+
+rabbitmq:
+  exchange_name: normalization-exchange
+  host: localhost
+  username: maeve
+  password: maeve
+  exchangeType: fanout
+    
+spring:
+  application:
+    name: maeve-importer-service
+  data:
+    mongodb:
+      database: maeve
+      uri: mongodb://localhost:27017/maevedb
+
+server:
+  port:
+    9001
+  servlet:
+    contextPath: /maeve/importer-service
+
+logging:
+  level:
+    com:
+      maeve:
+        importer: INFO

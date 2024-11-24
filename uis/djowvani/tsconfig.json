@@ -1,0 +1,57 @@
+{
+  "compilerOptions": {
+    "jsx": "preserve",
+    "baseUrl": "./src",
+    "paths": {
+      "@/components/*": [
+        "components/*"
+      ],
+      "@/styles/*": [
+        "styles/*"
+      ],
+      "@/data/*": [
+        "data/*"
+      ],
+      "@/context/*": [
+        "context/*"
+      ],
+      "@/utils/*": [
+        "utils/*"
+      ],
+      "@/hooks/*": [
+        "hooks/*"
+      ],
+      "@/modules/*": [
+        "node_modules/*"
+      ]
+    },
+    "target": "es5",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "incremental": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "*/*.ts",
+    "*/*.tsx",
+    "**/*.ts",
+    "**/*.tsx",
+    "src/components/BackgroundSmoke/BackgroundSmoke.js"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

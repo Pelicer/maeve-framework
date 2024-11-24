@@ -1,0 +1,31 @@
+from evaluation_service import EvaluationService
+
+class PortfolioUseCase():
+    
+    def __init__(self, models, force_model_creation):
+        self.force_model_creation = force_model_creation
+        self.evaluation_service = EvaluationService('./datasets/dataset_portfolio.csv')    
+        self.models = models         
+
+    def run(self):
+        self.evaluation_service.loadAndPreProcess('contacted')
+        self.evaluation_service.plot_distribution('contacted', './datasets/label_distribution/dataset_portfolio_')
+
+        for model in self.models:
+            print(f"Running evaluation for {model}")
+            resources_output = f"./models/{model}/output_resources/portfolio_use_case/"
+            n_neighbors_list = [1, 3, 5, 7, 9]
+            model_extension = 'h5' if model == 'DeepLearning' else 'pkl'
+            
+            if model == 'KNN':
+                for i in n_neighbors_list:
+                    print(f"Running KNN with neighbords: {i}")
+                    self.evaluation_service.define_model(model = model, force_model_creation = self.force_model_creation, n_neighbors=i)                          
+                    history, accuracy, cm, cr = self.evaluation_service.model.train_and_evaluate()
+                    self.evaluation_service.print_and_save_metrics(history, accuracy, cm, cr, f"{resources_output}/{i}_")
+                    self.evaluation_service.saveModel(f"./models/{model}/model/portfolio_use_case/{model}_model_n_{i}.{model_extension}")
+            else:
+                self.evaluation_service.define_model(model = model, force_model_creation = self.force_model_creation)                          
+                history, accuracy, cm, cr = self.evaluation_service.model.train_and_evaluate()
+                self.evaluation_service.print_and_save_metrics(history, accuracy, cm, cr, resources_output)
+                self.evaluation_service.saveModel(f"./models/{model}/model/portfolio_use_case/{model}_model.{model_extension}")

@@ -1,0 +1,17 @@
+{
+  "name": "usasbility-bots",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx cypress run",
+    "cypress:open": "npx cypress open"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cypress": "^12.11.0",
+    "node-schedule": "^2.1.1"
+  }
+}

@@ -1,0 +1,8 @@
+{
+    "accuracy": 0.9996335654085746,
+    "correctly_classified_instances": 99.96335654085746,
+    "incorrectly_classified_instances": 0.03664345914253886,
+    "precision": 0.9996335654085746,
+    "recall": 0.9996335654085746,
+    "f1_score": 0.9996335654085746
+}

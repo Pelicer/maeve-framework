@@ -1,0 +1,77 @@
+spring:
+  data:
+    mongodb:
+      database: maeve
+      uri: mongodb://localhost:27017/maevedb
+
+features-and-label:
+#Landing page
+  features:
+    - session_id
+    - logged
+    - gender
+    - age
+    - page_view_time
+    - session_duration_minutes
+    - page_scroll_depth
+    - frustration_count
+    - browser
+    - operating_system
+    - referral_source
+    - date
+    - state
+    - city
+  label: contacted
+# Portfolio page
+#  features:
+#    - session_id
+#    - logged
+#    - gender
+#    - age
+#    - page_view_time
+#    - session_duration_minutes
+#    - page_scroll_depth
+#    - frustration_count
+#    - browser
+#    - operating_system
+#    - referral_source
+#    - date
+#    - state
+#    - city
+#  label: contacted
+# Fantasy soccer page
+#  features:
+#    - session_id
+#    - logged
+#    - gender
+#    - age
+#    - home_page_view_time
+#    - creation_page_view_time
+#    - session_duration_minutes
+#    - home_page_frustration_count
+#    - creation_page_frustration_count
+#    - browser
+#    - operating_system
+#    - referral_source
+#    - date
+#    - state
+#    - city
+#    - has_fantasy_teams
+#    - num_sessions_last_month
+#    - creation_page_scroll_depth
+#  label: created_fantasy_team
+
+csv:
+  storagePath:
+
+server:
+  port:
+    9003
+  servlet:
+    contextPath: /maeve/generator-service
+
+logging:
+  level:
+    com:
+      maeve:
+        generator: INFO

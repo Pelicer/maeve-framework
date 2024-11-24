@@ -1,0 +1,112 @@
+spring:
+  application:
+    name: maeve-normalizer-service
+  data:
+    mongodb:
+      database: maeve
+      uri: mongodb://localhost:27017/maevedb
+
+rabbitmq:
+  exchange_name: normalization-exchange
+  host: localhost
+  username: maeve
+  password: maeve
+  exchangeType: fanout
+
+# The field below is where we tell the normalizer what fields to extract
+# and normalize from the ingested logs. In the context of our experimental
+# evaluation, fields such as gender, age, logged, number of sessions last month
+# and has_fantasy_teams (for the Fantasy Soccer page) and referral_source were added manually
+# afterwards. The system currently has the limitation of generating datasets for
+# one application at a time, thus the commented fields for the fantasy soccer
+# and portfolio use cases.
+normalizer:
+# Landing page
+  fields:
+    session_id:
+      source: session_id
+    date:
+      source: date
+    state:
+      source: state
+    city:
+      source: city
+    browser:
+      source: browser
+    operating_system:
+      source: operating_system
+    page_view_time:
+      source: attributes.view.page_view_time
+    session_duration_minutes:
+      source: attributes.view.session_duration
+    page_scroll_depth:
+      source: attributes.view.page_scroll_depth
+    frustration_count:
+      source: attributes.view.frustration_count
+    contacted:
+      source: attributes.view.Button__StyledButton-sc-l3tsqp-0.click
+# Portfolio page
+#  fields:
+#    session_id:
+#      source: session_id
+#    date:
+#      source: date
+#    state:
+#      source: state
+#    city:
+#      source: city
+#    browser:
+#      source: browser
+#    operating_system:
+#      source: operating_system
+#    page_view_time:
+#      source: attributes.view.page_view_time
+#    session_duration_minutes:
+#      source: attributes.view.session_duration
+#    page_scroll_depth:
+#      source: attributes.view.page_scroll_depth
+#    frustration_count:
+#      source: attributes.view.frustration_count
+#    contacted:
+#      source: attributes.view.MailMe__Button-sc-1xw4wfi-6.click
+#Fantasy soccer page
+#  fields:
+#    session_id:
+#      source: session_id
+#    date:
+#      source: date
+#    state:
+#      source: state
+#    city:
+#      source: city
+#    browser:
+#      source: browser
+#    operating_system:
+#      source: operating_system
+#    home_page_view_time:
+#      source: attributes.view.home.page_view_time
+#    creation_page_view_time:
+#      source: attributes.view.creation.page_view_time
+#    session_duration_minutes:
+#      source: attributes.view.session_duration
+#    page_scroll_depth:
+#      source: attributes.view.page_scroll_depth
+#    home_page_frustration_count:
+#      source: attributes.view.home.frustration_count
+#    creation_page_frustration_count:
+#      source: attributes.view.creation.frustration_count
+#    creation_page_scroll_depth:
+#      source: attributes.view.creation.page_scroll_depth
+#    created_fantasy_team:
+#      source: attributes.view.creation.$config-info.button.click
+server:
+  port:
+    9002
+  servlet:
+    contextPath: /maeve/normalizer-service
+
+logging:
+  level:
+    com:
+      maeve:
+        normalizer: INFO

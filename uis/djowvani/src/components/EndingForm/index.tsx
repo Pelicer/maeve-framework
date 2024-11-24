@@ -1,0 +1,278 @@
+import styled from "styled-components";
+import Typewriter from "typewriter-effect";
+
+import { useMailMe } from "@/hooks/useMailMe";
+
+import TextInput from "@/components/TextInput";
+
+import {
+  formErrorColor,
+  greenLight,
+  solidWhite,
+} from "@/styles/abstracts/_variables";
+
+const Container = styled.div`
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const FormContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80rem;
+  height: 40rem;
+  flex-direction: column;
+  align-items: center;
+
+  @media screen and (max-width: 1024px) {
+    width: 25rem;
+    height: 50rem;
+    background-position: right;
+  }
+`;
+
+const Instructions = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  align-items: center;
+  justify-content: center;
+
+  @media screen and (max-width: 1024px) {
+    width: 80%;
+  }
+
+  & > p:last-child {
+    margin-top: 5px;
+  }
+`;
+
+const MailBox = styled.form`
+  width: 30rem;
+  margin-top: 1rem;
+
+  @media screen and (max-width: 1024px) {
+    width: 80%;
+  }
+`;
+
+const MailBoxHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+
+  @media screen and (max-width: 1024px) {
+    flex-direction: column;
+  }
+
+  & > * {
+    width: 14rem;
+
+    @media screen and (max-width: 1024px) {
+      width: 100%;
+    }
+  }
+`;
+
+const MailBoxBody = styled.div`
+  margin-top: 2rem;
+`;
+
+const MailBoxFooter = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1rem;
+`;
+
+const Button = styled.button<{
+  isLoadingSendEmail: boolean;
+}>`
+  opacity: ${({ isLoadingSendEmail }) => (isLoadingSendEmail ? "0" : "1")};
+  height: 3rem;
+  width: 5rem;
+  border-radius: 2rem;
+  background: transparent;
+  outline: 1px solid ${solidWhite};
+  color: ${solidWhite};
+  transition: opacity 1s;
+  transition: outline 0s;
+  transition: font-weight 0s;
+
+  &:focus-visible {
+    font-weight: bold;
+    outline: 2px solid ${solidWhite};
+  }
+`;
+
+const LoadingSendEmail = styled.div<{ isLoadingSendEmail: boolean }>`
+  position: absolute;
+  height: 2rem;
+  width: 2rem;
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: ${({ isLoadingSendEmail }) => (isLoadingSendEmail ? "1" : "0")};
+  background-image: url("/img/loading.gif");
+  transition: 1s all;
+`;
+
+const SuccessTypewriterContainer = styled.div<{ isEmailSent: boolean }>`
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+
+  .Typewriter__wrapper,
+  .Typewriter__cursor {
+    display: ${({ isEmailSent }) => (isEmailSent ? "inline" : "none")};
+    opacity: ${({ isEmailSent }) => (isEmailSent ? "1" : "0")};
+    color: ${({ isEmailSent }) => isEmailSent && greenLight};
+    background: transparent;
+    transition: 1s opacity;
+  }
+`;
+
+const FailTypewriterContainer = styled.div<{ isEmailSent: boolean }>`
+  display: flex;
+  flex-direction: row;
+  max-width: 16rem;
+  text-align: center;
+
+  .Typewriter__wrapper,
+  .Typewriter__cursor {
+    display: ${({ isEmailSent }) => (isEmailSent ? "inline" : "none")};
+    opacity: ${({ isEmailSent }) => (isEmailSent ? "1" : "0")};
+    color: ${({ isEmailSent }) => isEmailSent && formErrorColor};
+    background: transparent;
+    transition: 1s opacity;
+  }
+`;
+
+const EmailSent = styled.div`
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+`;
+
+const EndingForm = () => {
+  const [
+    isLoadingSendEmail,
+    isEmailSent,
+    isEmailFail,
+    control,
+    errors,
+    handleSubmit,
+    onSubmit,
+    setIsEmailFail,
+    setIsEmailSent,
+  ] = useMailMe({ type: "ending" });
+
+  return (
+    <Container>
+      {isEmailSent ? (
+        <h1 style={{ position: "absolute", top: "50%", fontSize: "5rem" }}>
+          THOU SHALL BE CONTACTED
+        </h1>
+      ) : (
+        <FormContainer id="website-request-form">
+          <h1>YOU SEEM ELIGIBLE</h1>
+
+          <Instructions>
+            <p>IDENTIFY THYSELF, IF YOU WISH TO PROCEED ENLISTMENT</p>
+          </Instructions>
+
+          <MailBox id="ending" onSubmit={handleSubmit(onSubmit)}>
+            <MailBoxHeader>
+              <TextInput
+                control={control}
+                id="name"
+                label="NAME / ALIAS"
+                helperText={errors?.name?.message}
+                aria="name"
+              />
+              <TextInput
+                control={control}
+                id="email"
+                label="EMAIL"
+                aria="email"
+                helperText={
+                  errors?.email?.message && "email must be a valid address"
+                }
+              />
+            </MailBoxHeader>
+
+            <MailBoxBody>
+              <TextInput
+                control={control}
+                id="message"
+                label="WHAT URGES FOR CHANGE IN THIS WORLD?"
+                fullWidth
+                multiline
+                rows={4}
+                helperText={errors?.message?.message}
+                aria="message"
+              />
+            </MailBoxBody>
+
+            <MailBoxFooter>
+              <EmailSent>
+                <LoadingSendEmail isLoadingSendEmail={isLoadingSendEmail} />
+                {isEmailSent && (
+                  <SuccessTypewriterContainer isEmailSent={isEmailSent}>
+                    <Typewriter
+                      options={{
+                        delay: 75,
+                        cursor: "_",
+                      }}
+                      onInit={(typewriter) => {
+                        typewriter
+                          .typeString("THOU SHALL BE CONTACTED.")
+                          .pauseFor(2500)
+                          .deleteAll()
+                          .callFunction(() => setIsEmailSent(false))
+                          .start();
+                      }}
+                    />
+                  </SuccessTypewriterContainer>
+                )}
+                {isEmailFail && (
+                  <FailTypewriterContainer isEmailSent={!isEmailSent}>
+                    <Typewriter
+                      options={{
+                        delay: 50,
+                        cursor: "_",
+                      }}
+                      onInit={(typewriter) => {
+                        typewriter
+                          .typeString(
+                            "Something went wrong, an alert was sent for me to fix this!"
+                          )
+                          .pauseFor(2500)
+                          .deleteAll()
+                          .callFunction(() => setIsEmailFail(false))
+                          .start();
+                      }}
+                    />
+                  </FailTypewriterContainer>
+                )}
+              </EmailSent>
+              <Button
+                type="submit"
+                disabled={isLoadingSendEmail}
+                isLoadingSendEmail={isLoadingSendEmail}
+                aria-label="Send email"
+              >
+                SEND
+              </Button>
+            </MailBoxFooter>
+          </MailBox>
+        </FormContainer>
+      )}
+    </Container>
+  );
+};
+
+export default EndingForm;
